@@ -225,15 +225,15 @@ export const SidebarNavigation = ({ selectedLanguage, isMobileOpen = false, onMo
             </Badge>
           </div>
           <Button 
-            variant="ghost" 
+            variant="default" 
             size="sm" 
-            className="text-xs h-6 px-2"
+            className="text-sm font-semibold h-8 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200 border-0"
             onClick={() => {
               localStorage.removeItem('selectedLanguage');
               window.location.reload();
             }}
           >
-            Change
+            Change Language
           </Button>
         </div>
       </div>

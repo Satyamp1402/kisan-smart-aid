@@ -26,11 +26,9 @@ import {
   Database,
   FileText,
   TrendingDown,
-  AlertTriangle,
-  ArrowLeft
+  AlertTriangle
 } from 'lucide-react';
 import { generatePDFReport, downloadData } from '@/utils/pdfUtils';
-import { Link } from 'react-router-dom';
 
 export const PesticideOptimization = () => {
   // Sample data
@@ -78,18 +76,6 @@ export const PesticideOptimization = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
-      {/* Header with Navigation */}
-      <header className="bg-card/95 backdrop-blur-sm shadow-medium border-b border-border/30 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="text-muted-foreground hover:text-foreground flex items-center space-x-2 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Dashboard</span>
-            </Link>
-          </div>
-        </div>
-      </header>
-      
       <div className="flex-1 p-6 space-y-6">
         <div id="pesticide-optimization-report" className="space-y-6">
         {/* Header */}

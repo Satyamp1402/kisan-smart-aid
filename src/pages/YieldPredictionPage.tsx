@@ -1,15 +1,11 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
-import { TrendingUp, Leaf, BarChart3, Calendar, MapPin, AlertCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { YieldPrediction } from '@/components/YieldPrediction';
 
 export const YieldPredictionPage = () => {
+  return <YieldPrediction />;
+};
+
+// Legacy component kept for reference
+export const LegacyYieldPredictionPage = () => {
   const [formData, setFormData] = useState({
     crop: "",
     area: "",

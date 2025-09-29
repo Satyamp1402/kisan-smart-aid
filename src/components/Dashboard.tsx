@@ -25,7 +25,8 @@ import {
   Mic,
   Eye,
   Navigation,
-  Target
+  Target,
+  Menu
 } from "lucide-react";
 
 interface Language {
@@ -37,9 +38,10 @@ interface Language {
 
 interface DashboardProps {
   selectedLanguage: Language;
+  onMobileMenuToggle?: () => void;
 }
 
-export const Dashboard = ({ selectedLanguage }: DashboardProps) => {
+export const Dashboard = ({ selectedLanguage, onMobileMenuToggle }: DashboardProps) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -100,13 +102,14 @@ export const Dashboard = ({ selectedLanguage }: DashboardProps) => {
     }
   };
 
+  // Hero optimization features as main quick actions  
   const quickActions = [
-    { title: "Scan Crop", icon: Camera, color: "bg-gradient-primary", route: "/disease-detection" },
-    { title: "Voice Assistant", icon: Mic, color: "bg-gradient-sky", route: "/voice-assistant" },
-    { title: "Optimization", icon: Target, color: "bg-gradient-to-br from-purple-500 to-indigo-500", route: "/fertilizer-optimization" },
-    { title: "Market Prices", icon: DollarSign, color: "bg-gradient-harvest", route: "/marketplace" },
-    { title: "Weather Alert", icon: Cloud, color: "bg-gradient-to-br from-cyan-500 to-blue-500", route: "/weather" },
-    { title: "Pro Tips", icon: Leaf, color: "bg-gradient-sage", route: "/pro-tips" }
+    { title: "Yield Prediction", icon: TrendingUp, color: "bg-gradient-to-br from-purple-500 to-violet-600", route: "/yield-prediction" },
+    { title: "Fertilizer Optimization", icon: Leaf, color: "bg-gradient-to-br from-green-500 to-emerald-600", route: "/fertilizer-optimization" },
+    { title: "Pesticide Optimization", icon: Shield, color: "bg-gradient-to-br from-red-500 to-orange-600", route: "/pesticide-optimization" },
+    { title: "Irrigation Scheduler", icon: Droplets, color: "bg-gradient-to-br from-cyan-500 to-blue-600", route: "/irrigation-scheduler" },
+    { title: "Disease Detection", icon: Camera, color: "bg-gradient-to-br from-amber-500 to-orange-500", route: "/disease-detection" },
+    { title: "Voice Assistant", icon: Mic, color: "bg-gradient-to-br from-violet-500 to-purple-500", route: "/voice-assistant" }
   ];
 
   return (
@@ -115,6 +118,16 @@ export const Dashboard = ({ selectedLanguage }: DashboardProps) => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center space-x-3 mb-2">
+            {/* Mobile menu button */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="lg:hidden"
+              onClick={onMobileMenuToggle}
+              aria-label="Open navigation"
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
             <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-green-400 to-emerald-500 shadow-medium">
               <img src="/sprout.png" alt="Sprout" className="w-8 h-8 object-contain" />
             </div>
@@ -140,18 +153,18 @@ export const Dashboard = ({ selectedLanguage }: DashboardProps) => {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      {/* Hero Optimization Features */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
         {quickActions.map((action, index) => {
           const Icon = action.icon;
           return (
             <Link key={index} to={action.route}>
-              <Card className="group hover:shadow-medium transition-all duration-300 hover:scale-105 cursor-pointer border-border/50 bg-card/80 backdrop-blur-sm">
-                <CardContent className="p-4 text-center">
-                  <div className={`w-12 h-12 ${action.color} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
-                    <Icon className="w-6 h-6 text-white" />
+              <Card className="group hover:shadow-medium transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer border-border/50 bg-card/80 backdrop-blur-sm touch-manipulation">
+                <CardContent className="p-3 sm:p-4 text-center">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 ${action.color} rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3 group-hover:scale-110 transition-transform shadow-lg`}>
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <h3 className="text-sm font-medium text-foreground">{action.title}</h3>
+                  <h3 className="text-xs sm:text-sm font-medium text-foreground leading-tight">{action.title}</h3>
                 </CardContent>
               </Card>
             </Link>
@@ -160,7 +173,7 @@ export const Dashboard = ({ selectedLanguage }: DashboardProps) => {
       </div>
 
       {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {/* Crop Health */}
         <Card className="hover:shadow-medium transition-shadow border-border/50 bg-card/90 backdrop-blur-sm">
           <CardHeader className="pb-3">

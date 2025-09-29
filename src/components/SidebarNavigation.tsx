@@ -47,10 +47,13 @@ interface Language {
 
 interface SidebarNavigationProps {
   selectedLanguage: Language;
+  isMobileOpen?: boolean;
+  onMobileClose?: () => void;
 }
 
-export const SidebarNavigation = ({ selectedLanguage }: SidebarNavigationProps) => {
-  const [expandedSections, setExpandedSections] = useState<string[]>(["ai-features", "marketplace"]);
+export const SidebarNavigation = ({ selectedLanguage, isMobileOpen = false, onMobileClose }: SidebarNavigationProps) => {
+  // Start with all sections collapsed by default
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const location = useLocation();
 
   const toggleSection = (section: string) => {
@@ -69,17 +72,41 @@ export const SidebarNavigation = ({ selectedLanguage }: SidebarNavigationProps) 
       route: "/",
       color: "bg-gradient-to-br from-sky-500 to-blue-600 text-white"
     },
+    // Hero features - expose as top-level items (no dropdown)
     {
-      id: "optimization",
-      title: "🎯 Smart Optimization",
-      icon: Target,
-      color: "bg-gradient-to-br from-indigo-500 to-purple-600 text-white",
-      children: [
-        { title: "Fertilizer Optimization", icon: Leaf, route: "/fertilizer-optimization", badge: "Smart" },
-        { title: "Pesticide Optimization", icon: Shield, route: "/pesticide-optimization", badge: "AI" },
-        { title: "Irrigation Scheduler", icon: Droplets, route: "/irrigation-scheduler", badge: "Schedule" },
-        { title: "Suggestions & Schedules", icon: Calendar, route: "/suggestions-schedules", badge: "Plan" }
-      ]
+      id: "yield-prediction",
+      title: "Yield Prediction",
+      icon: TrendingUp,
+      route: "/yield-prediction",
+      color: "bg-gradient-to-br from-purple-500 to-violet-600 text-white"
+    },
+    {
+      id: "fertilizer-optimization",
+      title: "Fertilizer Optimization",
+      icon: Leaf,
+      route: "/fertilizer-optimization",
+      color: "bg-gradient-to-br from-green-500 to-emerald-600 text-white"
+    },
+    {
+      id: "pesticide-optimization",
+      title: "Pesticide Optimization",
+      icon: Shield,
+      route: "/pesticide-optimization",
+      color: "bg-gradient-to-br from-red-500 to-orange-600 text-white"
+    },
+    {
+      id: "irrigation-scheduler",
+      title: "Irrigation Scheduler",
+      icon: Droplets,
+      route: "/irrigation-scheduler",
+      color: "bg-gradient-to-br from-cyan-500 to-blue-600 text-white"
+    },
+    {
+      id: "suggestions-schedules",
+      title: "Suggestions & Schedules",
+      icon: Calendar,
+      route: "/suggestions-schedules",
+      color: "bg-gradient-to-br from-indigo-500 to-purple-600 text-white"
     },
     {
       id: "ai-features",
@@ -88,7 +115,6 @@ export const SidebarNavigation = ({ selectedLanguage }: SidebarNavigationProps) 
       color: "bg-gradient-to-br from-crop-green to-crop-green-light text-white",
       children: [
         { title: "Crop Disease Detection", icon: Camera, route: "/disease-detection", badge: "Smart" },
-        { title: "Yield Prediction", icon: TrendingUp, route: "/yield-prediction", badge: "AI" },
         { title: "Voice Assistant", icon: Mic, route: "/voice-assistant", badge: "Voice" },
         { title: "AR Field Scanner", icon: Eye, route: "/ar-scanner", badge: "AR" },
         { title: "Satellite Monitoring", icon: Satellite, route: "/satellite-monitoring", badge: "Satellite" }
@@ -174,7 +200,12 @@ export const SidebarNavigation = ({ selectedLanguage }: SidebarNavigationProps) 
   };
 
   return (
-    <div className="w-80 bg-card/95 backdrop-blur-sm border-r border-border/30 h-screen overflow-y-auto sticky top-0 shadow-medium">
+    <div className={`
+      w-80 bg-card/95 backdrop-blur-sm border-r border-border/30 h-screen overflow-y-auto 
+      fixed lg:sticky top-0 shadow-medium z-50 
+      transition-transform duration-300 ease-in-out
+      ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+    `}>
       {/* Header */}
       <div className="p-6 border-b border-border/30 bg-gradient-to-r from-primary/5 to-accent/5">
         <div className="flex items-center space-x-3">
@@ -231,10 +262,10 @@ export const SidebarNavigation = ({ selectedLanguage }: SidebarNavigationProps) 
                   {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                 </Button>
               ) : (
-                <Link to={section.route}>
+                <Link to={section.route} onClick={onMobileClose}>
                   <Button
                     variant="ghost"
-                    className={`w-full justify-start p-3 h-auto text-left hover:bg-accent/50 ${
+                    className={`w-full justify-start p-3 h-auto text-left hover:bg-accent/50 touch-manipulation ${
                       isActive(section.route) ? 'bg-primary/10 text-primary' : ''
                     }`}
                   >
@@ -254,10 +285,10 @@ export const SidebarNavigation = ({ selectedLanguage }: SidebarNavigationProps) 
                   {section.children.map((child, index) => {
                     const ChildIcon = child.icon;
                     return (
-                      <Link key={index} to={child.route}>
+                      <Link key={index} to={child.route} onClick={onMobileClose}>
                         <Button
                           variant="ghost"
-                          className={`w-full justify-start p-2 h-auto text-left hover:bg-accent/50 ${
+                          className={`w-full justify-start p-2 h-auto text-left hover:bg-accent/50 touch-manipulation ${
                             isActive(child.route) ? 'bg-primary/10 text-primary' : ''
                           }`}
                         >
